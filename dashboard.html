@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ResearchHub | لوحة التحكم</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="app">
+  <aside class="sidebar glass">
+    <div class="side-top">
+      <a class="brand-mini" href="dashboard.html">
+        <img src="assets/logo.svg" alt="Logo" />
+        <div>
+          <div class="t">ResearchHub</div>
+          <div class="s">إدارة البحث العلمي</div>
+        </div>
+      </a>
+      <button id="themeBtn" class="iconbtn" title="تبديل الثيم">🌓</button>
+    </div>
+
+    <nav class="nav">
+      <a class="navlink active" href="dashboard.html">لوحة التحكم</a>
+      <a class="navlink" href="projects.html">المشاريع</a>
+      <a class="navlink" href="papers.html">المراجع</a>
+      <a class="navlink" href="analytics.html">التحليلات</a>
+    </nav>
+
+    <div class="side-bottom">
+      <div class="userbox">
+        <div class="avatar" id="avatar"></div>
+        <div>
+          <div class="u" id="userName"></div>
+          <div class="muted small">وضع Offline</div>
+        </div>
+      </div>
+      <button id="logoutBtn" class="btn danger w100">تسجيل خروج</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h2>لوحة التحكم</h2>
+      <div class="top-actions">
+        <button id="exportBtn" class="btn">تصدير البيانات</button>
+        <label class="btn">
+          استيراد
+          <input id="importFile" type="file" accept="application/json" hidden />
+        </label>
+        <button id="resetBtn" class="btn danger">إعادة ضبط</button>
+      </div>
+    </header>
+
+    <section class="grid">
+      <div class="card glass">
+        <h3>ملخص سريع</h3>
+        <div class="kpi">
+          <div class="k">
+            <div class="n" id="kProjects">0</div>
+            <div class="l">مشاريع</div>
+          </div>
+          <div class="k">
+            <div class="n" id="kTasks">0</div>
+            <div class="l">مهام</div>
+          </div>
+          <div class="k">
+            <div class="n" id="kPapers">0</div>
+            <div class="l">مراجع</div>
+          </div>
+          <div class="k">
+            <div class="n" id="kDone">0%</div>
+            <div class="l">إنجاز</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card glass">
+        <h3>أقرب المواعيد</h3>
+        <div id="deadlines" class="list"></div>
+        <div class="muted small">* يتم ترتيبها حسب التاريخ.</div>
+      </div>
+
+      <div class="card glass">
+        <div class="row-between">
+          <h3>كانبان سريع</h3>
+          <a class="btn small" href="projects.html">إدارة كاملة</a>
+        </div>
+        <div class="kanban-mini">
+          <div class="col">
+            <div class="colh">To-Do</div>
+            <div id="mini_todo" class="colb"></div>
+          </div>
+          <div class="col">
+            <div class="colh">Doing</div>
+            <div id="mini_doing" class="colb"></div>
+          </div>
+          <div class="col">
+            <div class="colh">Done</div>
+            <div id="mini_done" class="colb"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card glass">
+        <h3>نصائح تنظيم (للعمل البحثي)</h3>
+        <ul class="tips">
+          <li>حوّل كل هدف بحثي إلى مهام صغيرة قابلة للقياس.</li>
+          <li>اربط كل مهمة بمشروع + موعد + أولوية.</li>
+          <li>أي ورقة علمية: Tag + تقييم + ملخص شخصي.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script>
+    RH.initCommon();
+    RH.guard();
+    $("#themeBtn").addEventListener("click", RH.toggleTheme);
+    $("#logoutBtn").addEventListener("click", RH.logout);
+
+    $("#exportBtn").addEventListener("click", RH.exportJSON);
+    $("#importFile").addEventListener("change", (e) => RH.importJSONFile(e.target.files[0]));
+    $("#resetBtn").addEventListener("click", () => {
+      RH.confirm("هل تريد حذف كل البيانات؟", () => {
+        RH.resetAll();
+        RH.toast("تمت إعادة الضبط.");
+        RH.renderDashboard();
+      });
+    });
+
+    RH.renderUserBox();
+    RH.renderDashboard();
+  </script>
+</body>
+</html>

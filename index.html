@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ResearchHub | تسجيل الدخول</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="bg">
+  <div class="auth">
+    <div class="auth-card glass">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="Logo" />
+        <div>
+          <h1>ResearchHub</h1>
+          <p>بوابة إدارة البحث العلمي — Front-End فقط (Offline-First)</p>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>تحت إعداد الطلبة:</strong>
+        <div>أيوب احفيظ ابوسنينة</div>
+        <div>عبدالرحيم حسين عمارة</div>
+      </div>
+
+      <form id="loginForm" class="form">
+        <label>اسم المستخدم</label>
+        <input id="username" type="text" placeholder="مثال: Ayoub" required />
+
+        <label>كلمة المرور</label>
+        <input id="password" type="password" placeholder="أي شيء (Demo)" required />
+
+        <div class="row">
+          <label class="chk">
+            <input id="remember" type="checkbox" checked />
+            <span>تذكرني</span>
+          </label>
+
+          <button class="btn primary" type="submit">دخول</button>
+        </div>
+
+        <div class="muted small">
+          * لا يوجد سيرفر. يتم حفظ البيانات محليًا فقط.
+        </div>
+      </form>
+
+      <div class="footer-actions">
+        <button id="seedBtn" class="btn">إضافة بيانات تجريبية</button>
+        <button id="themeBtn" class="btn">تبديل الثيم</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    RH.initCommon();
+
+    $("#themeBtn").addEventListener("click", RH.toggleTheme);
+    $("#seedBtn").addEventListener("click", () => {
+      RH.seedDemoData();
+      RH.toast("تمت إضافة بيانات تجريبية ✅");
+    });
+
+    $("#loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const user = $("#username").value.trim();
+      const pass = $("#password").value.trim();
+      if (!user || !pass) return RH.toast("أدخل البيانات أولًا", "warn");
+
+      RH.setSession({ user, remember: $("#remember").checked });
+      location.href = "dashboard.html";
+    });
+  </script>
+</body>
+</html>

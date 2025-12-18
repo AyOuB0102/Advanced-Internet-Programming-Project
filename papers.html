@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ResearchHub | المراجع</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="app">
+  <aside class="sidebar glass">
+    <div class="side-top">
+      <a class="brand-mini" href="dashboard.html">
+        <img src="assets/logo.svg" alt="Logo" />
+        <div>
+          <div class="t">ResearchHub</div>
+          <div class="s">إدارة البحث العلمي</div>
+        </div>
+      </a>
+      <button id="themeBtn" class="iconbtn">🌓</button>
+    </div>
+
+    <nav class="nav">
+      <a class="navlink" href="dashboard.html">لوحة التحكم</a>
+      <a class="navlink" href="projects.html">المشاريع</a>
+      <a class="navlink active" href="papers.html">المراجع</a>
+      <a class="navlink" href="analytics.html">التحليلات</a>
+    </nav>
+
+    <div class="side-bottom">
+      <button id="logoutBtn" class="btn danger w100">تسجيل خروج</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h2>مكتبة المراجع</h2>
+      <div class="top-actions">
+        <button id="newPaperBtn" class="btn primary">+ مرجع جديد</button>
+      </div>
+    </header>
+
+    <section class="card glass">
+      <div class="row wrap gap">
+        <input id="paperSearch" class="input" placeholder="بحث بالعنوان/المؤلف/الوسوم..." />
+        <select id="rateFilter" class="input">
+          <option value="">كل التقييمات</option>
+          <option value="5">★★★★★</option>
+          <option value="4">★★★★+</option>
+          <option value="3">★★★+</option>
+        </select>
+        <button id="exportBibBtn" class="btn">تصدير (JSON)</button>
+      </div>
+
+      <div id="papersList" class="list"></div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-card glass">
+      <div class="row-between">
+        <h3 id="modalTitle">Modal</h3>
+        <button class="iconbtn" id="closeModal">✕</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    RH.initCommon();
+    RH.guard();
+
+    $("#themeBtn").addEventListener("click", RH.toggleTheme);
+    $("#logoutBtn").addEventListener("click", RH.logout);
+
+    $("#newPaperBtn").addEventListener("click", RH.openPaperModal);
+    $("#closeModal").addEventListener("click", RH.closeModal);
+    $("#modal").addEventListener("click", (e) => { if (e.target.id === "modal") RH.closeModal(); });
+
+    $("#paperSearch").addEventListener("input", RH.renderPapers);
+    $("#rateFilter").addEventListener("change", RH.renderPapers);
+    $("#exportBibBtn").addEventListener("click", () => RH.exportJSON("researchhub_data.json"));
+
+    RH.renderPapers();
+  </script>
+</body>
+</html>
